@@ -50,7 +50,7 @@ const ArtistPage = () => {
           <div className="col-12 col-md-10 col-lg-10 mt-5">
             <h2 className="titleMain">{artist ? artist.name : "Loading..."}</h2>
             <div id="followers">
-              {artist ? artist.followers : "Loading..."} followers
+              {artist ? artist.nb_fan : "Loading..."} followers
             </div>
             <div
               className="d-flex justify-content-between mt-4"
@@ -76,7 +76,7 @@ const ArtistPage = () => {
         <div className="row mb-3">
           <div className="col-10 offset-1 col-md-10 col-lg-10 p-0">
             <div className="mt-4 d-flex justify-content-start">
-              <h2 className="text-white font-weight-bold">Tracks</h2>
+              <h2 className="text-white font-weight-bold">Albums</h2>
             </div>
             <div className="pt-5 mb-5">
               <div className="row" id="apiLoaded">

@@ -2,14 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { setCurrentSong } from "../actions/actions";
 
-export default function Album() {
+function Album(props) {
   const [currentTrack, setCurrentTrack] = useState(null);
   const { id } = useParams();
   const [album, setAlbum] = useState(null);
+  const [isHeartFilled, setIsHeartFilled] = useState({});
+
+  const handleHeartClick = (trackId) => {
+    setIsHeartFilled({
+      ...isHeartFilled,
+      [trackId]: !isHeartFilled[trackId],
+    });
+  };
 
   const handleClick = (track) => {
     setCurrentTrack(track);
+    props.setCurrentSong({
+      title: track.title,
+      albumCover: album.cover_big,
+    });
   };
 
   useEffect(() => {
@@ -86,6 +100,21 @@ export default function Album() {
                     {Math.floor(track.duration / 60)}:
                     {track.duration % 60 < 10 ? "0" : ""}
                     {track.duration % 60}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill={isHeartFilled[track.id] ? "currentColor" : "none"}
+                      stroke="currentColor"
+                      className="ms-5 me-2 bi bi-heart-fill"
+                      viewBox="0 0 16 16"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleHeartClick(track.id);
+                      }}
+                    >
+                      <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                    </svg>
                   </small>
                 </div>
               ))}
@@ -98,3 +127,9 @@ export default function Album() {
     <div>Loading...</div>
   );
 }
+
+const mapDispatchToProps = {
+  setCurrentSong,
+};
+
+export default connect(null, mapDispatchToProps)(Album);

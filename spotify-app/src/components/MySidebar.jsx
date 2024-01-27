@@ -4,28 +4,27 @@ import Logo from "../assets/logo/Spotify_Logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 
 export default function Sidebar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [redirect, setRedirect] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        `https://striveschool-api.herokuapp.com/api/deezer/search?q=${query}`
-      );
-      setResults(response.data);
-      setRedirect(true);
-    } catch (error) {
-      console.error("Error during search:", error);
+  if (redirect) {
+    navigate(`/search?query=${query}`);
+    return null;
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
     }
   };
 
-  if (redirect) {
-    return <useNavigate to={`/search?query=${query}`} />;
-  }
+  const handleSearch = () => {
+    navigate(`/search?query=${query}`);
+  };
 
   return (
     <div className="col-2">
@@ -54,7 +53,7 @@ export default function Sidebar() {
                   </Link>
                 </li>
                 <li className="ps-4">
-                  <Link className="nav-item nav-link" to="/your-library">
+                  <Link className="nav-item nav-link" to="/favoriti">
                     <FontAwesomeIcon icon={faBookOpen} className="fa-lg" /> Your
                     Library{" "}
                   </Link>
@@ -69,6 +68,7 @@ export default function Sidebar() {
                     aria-describedby="basic-addon2"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
                   />
                   <div style={{ marginBottom: "4%" }}>
                     <button

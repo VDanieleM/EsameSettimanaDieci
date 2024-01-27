@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Album from "./pages/Album.jsx";
 import Artist from "./pages/Artist.jsx";
 import Home from "./pages/Home.jsx";
+import Search from "./pages/Search.jsx";
+import Favoriti from "./pages/Favoriti.jsx";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <div className="col-10">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/favoriti" element={<Favoriti />} />
+              <Route path="/search" element={<Search />} />
               <Route path="/album/:id" element={<Album />} />
               <Route path="/artist/:id" element={<Artist />} />
             </Routes>
